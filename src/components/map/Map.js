@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import { React, useState } from "react";
+import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import { FindMeButton } from "./FindMeButton";
 
 const containerStyle = {
@@ -11,7 +11,11 @@ const libraries = ['places']
 
 const Map = () => {
   const [currentPosition, setCurrentPosition] = useState({ lat: 0, lng: 0 });
-
+  const {isLoaded} = useJsApiLoader({
+    //move to env
+    googleMapsApiKey:"AIzaSyAhlvbsoiY5sc-h2_7l3azuyVoeeYyrMsg", 
+    libraries: {libraries}
+  })
 
   const success = (position) => {
     const newPosition = {
@@ -24,28 +28,31 @@ const Map = () => {
   const getCurrentPosition = () => {
     navigator.geolocation.getCurrentPosition(success);
   };
+  
 
+  if(!isLoaded) {
+    return <p>Loading...</p>
+  }
 
-
-
-  if (!currentPosition.lat || !currentPosition.lng) {
+   if (!currentPosition.lat || !currentPosition.lng) {
     return <FindMeButton findMe={getCurrentPosition} />
   }
 
-  return (
-    <div>
-      <LoadScript
-        googleMapsApiKey="AIzaSyAhlvbsoiY5sc-h2_7l3azuyVoeeYyrMsg"
-        libraries={libraries}
-      >
+
+    return (
+      <>
         <GoogleMap
           mapContainerStyle={containerStyle}
           center={currentPosition}
           zoom={10}
-        />
-      </LoadScript>
-    </div>
-  );
-};
+        >
+          <Marker 
+            position={currentPosition}  
+          />
+        </GoogleMap>
+      </>
+    )
+  }
+
 
 export default Map;
