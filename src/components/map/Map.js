@@ -35,7 +35,7 @@ const Map = () => {
   return (
     <div>
       <LoadScript
-        googleMapsApiKey="AIzaSyAhlvbsoiY5sc-h2_7l3azuyVoeeYyr"
+        googleMapsApiKey="AIzaSyAhlvbsoiY5sc-h2_7l3azuyVoeeYyrMsg"
         libraries={libraries}
       >
         <GoogleMap
