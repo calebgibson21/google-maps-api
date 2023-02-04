@@ -1,9 +1,8 @@
-import { initMap } from "./Map";
 
-import React from 'react'
 
-export const FindMeButton = () => {
+
+export const FindMeButton = ({findMe}) => {
   return (
-    <button id="find-me-btn" onClick={initMap}>Map</button>
+    <button onClick={findMe}>Find Me</button>
   )
 }

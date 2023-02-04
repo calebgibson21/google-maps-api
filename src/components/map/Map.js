@@ -1,15 +1,17 @@
-import { useEffect, useState } from "react";
-import { GoogleMap, LoadScript } from "@react-google-maps/api";
+import { useState } from "react";
+import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import { FindMeButton } from "./FindMeButton";
 
 const containerStyle = {
     width: '400px',
     height: '400px'
   };
-
 const libraries = ['places']
+
 
 const Map = () => {
   const [currentPosition, setCurrentPosition] = useState({ lat: 0, lng: 0 });
+
 
   const success = (position) => {
     const newPosition = {
@@ -23,14 +25,17 @@ const Map = () => {
     navigator.geolocation.getCurrentPosition(success);
   };
 
+
+
+
   if (!currentPosition.lat || !currentPosition.lng) {
-    return <button onClick={getCurrentPosition}>Get Current Position</button>
+    return <FindMeButton findMe={getCurrentPosition} />
   }
 
   return (
     <div>
       <LoadScript
-        googleMapsApiKey="AIzaSyAhlvbsoiY5sc-h2_7l3azuyVoeeYyrMsg"
+        googleMapsApiKey="AIzaSyAhlvbsoiY5sc-h2_7l3azuyVoeeYyr"
         libraries={libraries}
       >
         <GoogleMap
