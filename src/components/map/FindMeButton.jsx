@@ -1,7 +1,8 @@
+import Button from "../UI/Buttons/Button"
 
 export const FindMeButton = ({findMe}) => {
   return (
-    <button onClick={findMe}>Find Me</button>
+    <Button onClick={findMe}>Find Me</Button>
   )
 }
  

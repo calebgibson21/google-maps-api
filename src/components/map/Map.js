@@ -1,6 +1,7 @@
 import { React, useState } from "react";
 import { GoogleMap, MarkerF, useJsApiLoader } from "@react-google-maps/api";
-import { FindMeButton } from "./FindMeButton";
+import Button from "../UI/Buttons/Button";
+import MapContainer from "../UI/Containers/MapContainer";
 
 const containerStyle = {
     width: '400px',
@@ -43,7 +44,12 @@ const Map = () => {
   }
 
   else if (!currentPosition.lat || !currentPosition.lng) {
-    return <FindMeButton findMe={getCurrentPosition} />
+    return (
+    <>
+      <MapContainer />
+      <Button onClick={getCurrentPosition}>Find Me</Button>
+    </>
+    )
   }
 
 
