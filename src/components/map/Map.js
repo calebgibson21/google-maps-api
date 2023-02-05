@@ -6,16 +6,20 @@ const containerStyle = {
     width: '400px',
     height: '400px'
   };
-const libraries = ['places']
 
+const libraries = ['places']
 
 const Map = () => {
   const [currentPosition, setCurrentPosition] = useState({ lat: 0, lng: 0 });
-  const {isLoaded} = useJsApiLoader({
+  const {isLoaded, loadError} = useJsApiLoader({
     //move to env
-    googleMapsApiKey:"AIzaSyAhlvbsoiY5sc-h2_7l3azuyVoeeYyrMsg", 
+    googleMapsApiKey: process.env.REACT_APP_API_KEY, 
     libraries: {libraries}
   })
+  //re-center the map
+  const [map, setMap] = useState(/** @type google.maps.Map */ (null));
+  //set marker locations
+  const [markers, setMarkers] = useState([])
 
   const success = (position) => {
     const newPosition = {
@@ -34,7 +38,11 @@ const Map = () => {
     return <p>Loading...</p>
   }
 
-   if (!currentPosition.lat || !currentPosition.lng) {
+  else if (loadError) {
+    return <p>Error with google maps</p>
+  }
+
+  else if (!currentPosition.lat || !currentPosition.lng) {
     return <FindMeButton findMe={getCurrentPosition} />
   }
 
