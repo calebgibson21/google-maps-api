@@ -12,16 +12,19 @@ const libraries = ['places'];
 
 const Map = () => {
   const [currentPosition, setCurrentPosition] = useState({ lat: 0, lng: 0 });
+
+  //loads the google maps API
   const {isLoaded, loadError} = useJsApiLoader({
-    //move to env
     googleMapsApiKey: process.env.REACT_APP_API_KEY, 
     libraries
   })
+
   // //re-center the map
   // const [map, setMap] = useState(/** @type google.maps.Map */ (null));
   // //set marker locations
   // const [markers, setMarkers] = useState([])
 
+  //gets the current position of the user
   const success = (position) => {
     const newPosition = {
       lat: position.coords.latitude,
@@ -30,6 +33,7 @@ const Map = () => {
     setCurrentPosition(newPosition);
   };
 
+  //sets the current position state to the user's current position
   const getCurrentPosition = () => {
     navigator.geolocation.getCurrentPosition(success);
   };
@@ -43,6 +47,7 @@ const Map = () => {
     return <p>Error with google maps</p>
   }
 
+  //only shows the map if the user has given permission to get their location
   else if (!currentPosition.lat || !currentPosition.lng) {
     return (
     <>
