@@ -1,5 +1,5 @@
 import { React, useState } from "react";
-import { GoogleMap, MarkerF, useJsApiLoader } from "@react-google-maps/api";
+import { GoogleMap, MarkerF, useJsApiLoader, StandaloneSearchBox } from "@react-google-maps/api";
 import Button from "../UI/Buttons/Button";
 import MapContainer from "../UI/Containers/MapContainer";
 import Loader from "../UI/Loader/Loader";
@@ -14,12 +14,17 @@ const libraries = ['places'];
 const Map = () => {
   const [currentPosition, setCurrentPosition] = useState({ lat: 0, lng: 0 });
   const [loading, setLoading] = useState(false);
+  const [searchBox, setSearchBox] = useState(null);
+
 
   //loads the google maps API
   const {isLoaded, loadError} = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_API_KEY, 
     libraries
   })
+
+  const onPlacesChanged = () => {if(searchBox) {console.log(searchBox.getPlaces())}}
+  const onSBLoad = ref => setSearchBox(ref)
 
   // //re-center the map
   // const [map, setMap] = useState(/** @type google.maps.Map */ (null));
@@ -65,6 +70,7 @@ const Map = () => {
     <>
       <MapContainer />
       <Button onClick={handleFindMe}>Find Me</Button>
+      <input type="text" placeholder="Search for a location" />
     </>
     )
   }
@@ -79,8 +85,13 @@ const Map = () => {
           <MarkerF
             position={currentPosition}  
           />
-
         </GoogleMap>
+        <StandaloneSearchBox 
+          onLoad={onSBLoad}
+          onPlacesChanged={onPlacesChanged}
+          >
+            <input type="text" placeholder="Search for a location" />
+        </StandaloneSearchBox>
       </>
     )
   }
