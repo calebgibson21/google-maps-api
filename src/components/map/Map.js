@@ -2,6 +2,7 @@ import { React, useState } from "react";
 import { GoogleMap, MarkerF, useJsApiLoader } from "@react-google-maps/api";
 import Button from "../UI/Buttons/Button";
 import MapContainer from "../UI/Containers/MapContainer";
+import Loader from "../UI/Loader/Loader";
 
 const containerStyle = {
     width: '400px',
@@ -12,6 +13,7 @@ const libraries = ['places'];
 
 const Map = () => {
   const [currentPosition, setCurrentPosition] = useState({ lat: 0, lng: 0 });
+  const [loading, setLoading] = useState(false);
 
   //loads the google maps API
   const {isLoaded, loadError} = useJsApiLoader({
@@ -31,12 +33,18 @@ const Map = () => {
       lng: position.coords.longitude,
     };
     setCurrentPosition(newPosition);
+    setLoading(false);
   };
 
   //sets the current position state to the user's current position
   const getCurrentPosition = () => {
     navigator.geolocation.getCurrentPosition(success);
   };
+
+  function handleFindMe() {
+    setLoading(true);
+    getCurrentPosition();
+  }
   
 
   if(!isLoaded) {
@@ -47,16 +55,19 @@ const Map = () => {
     return <p>Error with google maps</p>
   }
 
+  else if (loading) {
+    return <Loader />
+  }
+
   //only shows the map if the user has given permission to get their location
   else if (!currentPosition.lat || !currentPosition.lng) {
     return (
     <>
       <MapContainer />
-      <Button onClick={getCurrentPosition}>Find Me</Button>
+      <Button onClick={handleFindMe}>Find Me</Button>
     </>
     )
   }
-
 
     return (
       <>

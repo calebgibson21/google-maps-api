@@ -1,10 +1,10 @@
 import './App.css';
-import Map from './components/map/Map';
+import FindMe from './pages/FindMe/FindMe';
 
 function App() {
   return (
     <div className="App">
-        <Map></Map>
+      <FindMe />
     </div>
   );
 }
