@@ -15,6 +15,7 @@ const Map = () => {
   const [currentPosition, setCurrentPosition] = useState({ lat: 0, lng: 0 });
   const [loading, setLoading] = useState(false);
   const [searchBox, setSearchBox] = useState(null);
+  const [markers, setMarkers] = useState([]);
 
 
   //loads the google maps API
@@ -23,8 +24,30 @@ const Map = () => {
     libraries
   })
 
-  const onPlacesChanged = () => {if(searchBox) {console.log(searchBox.getPlaces())}}
-  const onSBLoad = ref => setSearchBox(ref)
+  const onPlacesChanged = () => {if(searchBox) {
+    let markerArray = [];
+    let results = searchBox.getPlaces();
+    console.log(results);
+    for (let i = 0; i < results.length; i++) {
+      let lat = results[i].geometry.location.lat; 
+      let lng = results[i].geometry.location.lng;
+
+      let position = {
+        lat: lat(),
+        lng: lng()
+      }
+      markerArray.push(position)
+      // let place = results[i].geometry.location;
+      // 
+    }
+    setMarkers(markerArray)
+    console.log(markerArray[0])
+  }
+}
+
+    // console.log(searchBox.getPlaces())}}
+    
+  const onSBLoad = (ref) => setSearchBox(ref) 
 
   // //re-center the map
   // const [map, setMap] = useState(/** @type google.maps.Map */ (null));
@@ -83,7 +106,7 @@ const Map = () => {
           zoom={10}
         >
           <MarkerF
-            position={currentPosition}  
+            position={markers[0]}  
           />
         </GoogleMap>
         <StandaloneSearchBox 
@@ -92,6 +115,7 @@ const Map = () => {
           >
             <input type="text" placeholder="Search for a location" />
         </StandaloneSearchBox>
+
       </>
     )
   }
